@@ -1,3 +1,6 @@
+const sequelize = require('../database');
+
+
 function coinList() {
     return('lista');
   }
