@@ -1,12 +1,15 @@
 const { Router } = require('express');
 const router = Router();
+const coinsController = require('../controllers/coins');
 
-router.get('/list', (req, res) =>{
-res.send('listcoins');
+router.get('/list', (req, res) => {
+    const lista = coinsController.coinList();
+    res.send(lista);
 });
 
 router.get('/top', (req, res) => {
-res.send('topCoins');
+    const top = coinsController.coinTop();
+    res.send(top);
 });
 
 

@@ -1,14 +1,14 @@
 const { Router } = require('express');
 const router = Router();
-const jwt = require('jsonwebtoken');
+const authController = require('../controllers/auth');
 
 
-router.post('/signin', (req, res) =>{
-res.send('signin');
+router.post('/signin', (req, res) => {
+    res.send(authController.signin());
 });
 
 router.get('/login', (req, res) => {
-    res.send('login');
+    res.send(authController.login());
 });
 
 
