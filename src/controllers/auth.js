@@ -1,23 +1,19 @@
 const jwt = require('jsonwebtoken');
 const { token } = require('morgan');
-const { user, coin } = require('../database')
+const { user } = require('../database')
 
-function validarToken(req, res, next) {
+function tokenvalidation(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {
-        const token = bearerHeader.split(' ')[1];
+        req.token = bearerHeader.split(' ')[1];
     } else {
         res.sendStatus(403);
     }
-    jwt.verify(token, 'secretkey', (err, authData) => {
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
         if (err) {
-            res.sendStatus(403);
-        } else {
-
-            // req.rol = authData.usuario[0].rol;
-
-            next();
+            res.json({ "rc": 3, "msg": "Invalid token" })
         }
+        next();
     });
 
 }
@@ -52,4 +48,4 @@ async function login(usrname, pass) {
 };
 
 
-module.exports = { validarToken, signin, login };
+module.exports = { tokenvalidation, signin, login };
