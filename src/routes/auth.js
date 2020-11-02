@@ -3,12 +3,14 @@ const router = Router();
 const authController = require('../controllers/auth');
 
 
-router.post('/signin', (req, res) => {
-    res.send(authController.signin());
+router.post('/signin', async (req, res) => {
+    const sign = await authController.signin(req.body);
+    res.json({ sign });
 });
 
-router.get('/login', (req, res) => {
-    res.send(authController.login());
+router.post('/login', async (req, res) => {
+    const token = await authController.login(req.body.username, req.body.password);
+    res.json({ token });
 });
 
 
