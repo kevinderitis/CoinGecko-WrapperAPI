@@ -12,6 +12,8 @@ function tokenvalidation(req, res, next) {
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if (err) {
             res.json({ "rc": 3, "msg": "Invalid token" })
+        }else{
+            req.user = authData.userfound;
         }
         next();
     });
@@ -23,8 +25,7 @@ async function signin(usr) {
     const userfound = await user.findAll({
         where: { "username": usr.username }
     });
-    console.log(userfound[0]);
-    console.log(usr);
+
     if (!userfound[0]) {
         await user.create(usr);
         sign = { success: "User created." }

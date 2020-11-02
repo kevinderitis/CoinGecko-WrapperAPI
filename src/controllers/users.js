@@ -1,6 +1,27 @@
+const { coinuser } = require('../database');
 
-function addCoin(idCoin, iduser) {
-    return ('addedCoin idcoin  ' +idCoin + 'iduser' +iduser + '');
+async function addCoin(idcoin, iduser) {
+    let result = "";
+    try {
+        result = await coinuser.findAll({
+            where: { "iduser": iduser, "idcoin": idcoin }
+        });
+    } catch (error) {
+        result = { "rc": error.parent.errno, "msg": error.parent.code }
+    }
+    if (!result[0]) {
+        const newcoinuser = { "iduser": iduser, "idcoin": idcoin };
+        try {
+            await coinuser.create(newcoinuser);
+            result = {success: "Currency added"}
+        } catch (error) {
+            result = { "rc": error.parent.errno, "msg": error.parent.code }
+        }
+    } else {
+        result = { "rc": 6, "msg": "Existing currency for that user" };
+    }
+
+    return (result);
 }
 
 

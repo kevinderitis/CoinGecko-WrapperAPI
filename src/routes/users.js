@@ -4,12 +4,11 @@ const userController = require('../controllers/users');
 const { tokenvalidation } = require('../controllers/auth');
 
 
-router.post('/addCoin/:id',tokenvalidation, (req, res) => {
+router.post('/addCoin/:id',tokenvalidation, async (req, res) => {
+    const authuserid = req.user[0].id;
     const idcoin = req.params.id;
-    console.log(idcoin);
-    //obtener id de user de authData
-    const iduser = 1;
-    res.send(userController.addCoin(idcoin, iduser));
+    const result =  await userController.addCoin(idcoin, authuserid)
+    res.send(result);
 });
 
 module.exports = router;
