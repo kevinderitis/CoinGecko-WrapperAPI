@@ -1,7 +1,7 @@
 const sequelize = require('../database');
 const fetch = require('node-fetch');
 const { response } = require('express');
-
+const { coinuser } = require('../database');
 
 async function coinList() {
     let data = [];
@@ -29,8 +29,40 @@ async function coinList() {
     return data;
 }
 
-function coinTop() {
-    return ('top');
+async function coinTop(userid) {
+    let result = "";
+    let marketlist = "";
+    let listtop = [];
+    try {
+        result = await coinuser.findAll({
+            where: { iduser: userid }
+        });
+        let list = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false')
+        marketlist = await list.json();
+        result.forEach(element => {
+
+            let data = searchmarketdata(element.idcoin, marketlist);
+            listtop.push(data);
+
+        });
+    } catch (error) {
+        result = { "rc": 6, "msg": error }
+    }
+
+
+    return listtop;
+}
+
+function searchmarketdata(idcoin, mrktlist) {
+    let data = "";
+    let x = 0;
+    while (data === "" && mrktlist[x] !== 'undefined') {
+        if (mrktlist[x].id === idcoin) {
+            data = mrktlist[x];
+        }
+        x = x + 1;
+    }
+    return data;
 }
 
 
