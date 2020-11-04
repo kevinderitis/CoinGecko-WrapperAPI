@@ -9,7 +9,7 @@ module.exports = (sequelize, type) => {
        lastname: type.STRING,
        username: type.STRING,
        password: type.STRING,
-       favcoin: type.INTEGER
+       favcoin: type.STRING
 
     })
 
