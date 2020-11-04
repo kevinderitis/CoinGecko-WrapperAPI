@@ -4,7 +4,7 @@ const { response } = require('express');
 const { coinuser, user } = require('../database');
 const users = require('../models/user');
 
-async function coinList() {
+async function coinList(authuserid) {
     let data = [];
     try {
         let res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');

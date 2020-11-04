@@ -5,7 +5,8 @@ const { tokenvalidation } = require('../controllers/auth');
 
 
 router.get('/list', tokenvalidation, async (req, res) => {
-    const lista = await coinsController.coinList();
+    const authuserid = req.user[0].id;
+    const lista = await coinsController.coinList(authuserid);
     res.send(lista);
 });
 
