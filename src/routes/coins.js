@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const coinsController = require('../controllers/coins');
 const { tokenvalidation } = require('../controllers/auth');
+const fetch = require('node-fetch');
 
 
 router.get('/list', tokenvalidation, async (req, res) => {
@@ -11,16 +12,19 @@ router.get('/list', tokenvalidation, async (req, res) => {
 });
 
 router.get('/top', tokenvalidation, async (req, res) => {
-    const authuserid = req.user[0].id;
-    const top = await coinsController.coinTop(authuserid);
+    let top = "";
 
-    if (top) {
-        res.send(top);
-    } else {
-        res.send({ "rc": 6, "msg": "No coins saved" })
+    try {
+        let authuserid = req.user[0].id;
+        top = await coinsController.coinTop(authuserid);
+
+    } catch (error) {
+        res.send({ "rc": 5, "msg": "Database connection error" })
     }
 
+res.send(top);
 });
+
 
 
 

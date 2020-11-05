@@ -31,7 +31,7 @@ async function coinList(authuserid) {
 }
 
 async function coinTop(userid) {
-
+    let ntop = [];
     let result = "";
     let marketlist = "";
     let listtop = [];
@@ -58,7 +58,19 @@ async function coinTop(userid) {
         result = { "rc": 6, "msg": error }
     }
 
-    return listtop;
+    if (listtop) {
+        try {
+            ntop = await ordertop(listtop);
+        } catch (error) {
+
+        }
+
+
+    } else {
+        return ({ "rc": 6, "msg": "No coins saved" })
+    }
+
+    return ntop;
 }
 
 function searchmarketdata(idcoin, mrktlist) {
@@ -74,6 +86,42 @@ function searchmarketdata(idcoin, mrktlist) {
     return data;
 }
 
+async function ordertop(listtop) {
+    let topn = [];
+    let idcoin = listtop[0].id;
+
+    let prices = await fetch(`https://api.coingecko.com/api/v3/exchange_rates`);
+    result = await prices.json();
+    let btcusd = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+    btcusdprice = await btcusd.json();
+    let btcars = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+    btcarsprice = await btcars.json();
+    let btceur = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+    btceurprice = await btceur.json();
+    listtop.forEach(element => {
+
+        let priceARS = (result.rates.ars.value * btcarsprice[0].current_price).toFixed(2);
+        let priceUSD = (result.rates.usd.value * btcusdprice[0].current_price).toFixed(2);
+        let priceEUR = (result.rates.eur.value * btceurprice[0].current_price).toFixed(2);
+
+
+        let data = {
+            "symbol": element.symbol,
+            "priceARS": priceARS,
+            "priceUSD": priceUSD,
+            "priceEUR": priceEUR,
+            "name": element.name,
+            "image": element.image,
+            "last_updated": element.last_updated
+        }
+        topn.push(data);
+
+    });
+
+
+
+    return topn;
+}
 
 
 module.exports = { coinList, coinTop };
