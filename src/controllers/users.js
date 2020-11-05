@@ -7,7 +7,7 @@ async function addCoin(idcoin, iduser) {
             where: { "iduser": iduser, "idcoin": idcoin }
         });
     } catch (error) {
-        result = { "rc": error.parent.errno, "msg": error.parent.code }
+        result = { "rc": 3, "msg": "Database connection error" }
     }
     if (!result[0]) {
         const newcoinuser = { "iduser": iduser, "idcoin": idcoin };
@@ -18,7 +18,7 @@ async function addCoin(idcoin, iduser) {
             result = { "rc": error.parent.errno, "msg": error.parent.code }
         }
     } else {
-        result = { "rc": 6, "msg": "Existing currency for that user" };
+        result = { "rc": 7, "msg": "Existing currency for that user" };
     }
 
     return (result);

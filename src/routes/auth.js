@@ -4,12 +4,22 @@ const authController = require('../controllers/auth');
 
 
 router.post('/signin', async (req, res) => {
-    const sign = await authController.signin(req.body);
+    try {
+        const sign = await authController.signin(req.body);
+    } catch (error) {
+        res.json({"rc": 3, "msg": "Database error connection"})
+    }
+   
     res.json({ sign });
 });
 
 router.post('/login', async (req, res) => {
-    const token = await authController.login(req.body.username, req.body.password);
+    try {
+        const token = await authController.login(req.body.username, req.body.password);
+    
+    } catch (error) {
+        res.json({"rc": 3, "msg": "Database error connection"})
+    }
     res.json({ token });
 });
 

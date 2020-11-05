@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { token } = require('morgan');
 const { user } = require('../database')
 
+
 function tokenvalidation(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {

@@ -24,7 +24,7 @@ async function coinList(authuserid) {
 
         });
     } catch (error) {
-        return { "rc": 6, "msg": "API connection error" }
+        return { "rc": 4, "msg": "API connection error" }
     }
 
     return data;
@@ -55,7 +55,7 @@ async function coinTop(userid) {
 
         });
     } catch (error) {
-        result = { "rc": 6, "msg": error }
+        result = { "rc": 3, "msg": "Database error connection" }
     }
 
     if (listtop) {
@@ -89,15 +89,19 @@ function searchmarketdata(idcoin, mrktlist) {
 async function ordertop(listtop) {
     let topn = [];
     let idcoin = listtop[0].id;
+    try {
+        let prices = await fetch(`https://api.coingecko.com/api/v3/exchange_rates`);
+        result = await prices.json();
+        let btcusd = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+        btcusdprice = await btcusd.json();
+        let btcars = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+        btcarsprice = await btcars.json();
+        let btceur = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+        btceurprice = await btceur.json();
+    } catch (error) {
+        return { "rc": 3, "msg": "Database connection error" }
+    }
 
-    let prices = await fetch(`https://api.coingecko.com/api/v3/exchange_rates`);
-    result = await prices.json();
-    let btcusd = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
-    btcusdprice = await btcusd.json();
-    let btcars = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
-    btcarsprice = await btcars.json();
-    let btceur = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=btc&ids=${idcoin}&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
-    btceurprice = await btceur.json();
     listtop.forEach(element => {
 
         let priceARS = (result.rates.ars.value * btcarsprice[0].current_price).toFixed(2);

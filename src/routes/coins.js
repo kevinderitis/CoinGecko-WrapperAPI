@@ -6,8 +6,15 @@ const fetch = require('node-fetch');
 
 
 router.get('/list', tokenvalidation, async (req, res) => {
-    const authuserid = req.user[0].id;
-    const lista = await coinsController.coinList(authuserid);
+    let lista = "";
+    
+    try {
+        const authuserid = req.user[0].id;
+        lista = await coinsController.coinList(authuserid);
+    } catch (error) {
+        lista= { "rc": 3, "msg": "Database connection error" };
+    }
+    
     res.send(lista);
 });
 
@@ -19,10 +26,10 @@ router.get('/top', tokenvalidation, async (req, res) => {
         top = await coinsController.coinTop(authuserid);
 
     } catch (error) {
-        res.send({ "rc": 5, "msg": "Database connection error" })
+        res.send({ "rc": 3, "msg": "Database connection error" })
     }
 
-res.send(top);
+    res.send(top);
 });
 
 

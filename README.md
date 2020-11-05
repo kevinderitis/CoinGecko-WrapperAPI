@@ -56,7 +56,7 @@ Nos logueamos enviando objeto con usuario y contraseña validos previamente regi
 }
 Si los usuarios son validos recibimos como respuesta el token de autenticación
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyZm91bmQiOlt7ImlkIjozLCJuYW1lIjoiYWRtaW4iLCJsYXN0bmFtZSI6ImFkbWluIiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiYWRtaW4iLCJmYXZjb2luIjpudWxsLCJjcmVhdGVkQXQiOiIyMDIwLTExLTA1VDAxOjM0OjU4LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTExLTA1VDAxOjM0OjU4LjAwMFoifV0sImlhdCI6MTYwNDU0MDMxNX0.8YRUlQ7qjrAlsSzwg41QlPQ5d4MGrgOQoLmnwgtt8r4"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyZm91bmQiOlt7ImlkIjozLCJuYW1lIjoiYWRtaW4iLCJsYXN0bmFtZSI6ImFkbWluIiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiYWRtaW4iLCJmYXZjb2luIjpudWxsLCJjcmVhdGVkQXQiOiIyMDIwLTExLTA1VDAxOjM0OjU4LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTExLTA1VDAxOjM0OjU4LjAwMFoifV0sImlhdCI6MTYwNDU0MDMxNX0.8YRUlQ7qjrAlsSzwg41QlPQ5d4MGrgOQoLmnwgtt8r3"
 }
                             -------------------
 GET **/api/coins/list
@@ -78,6 +78,25 @@ Nos devuelve el top N de criptomonedas del usuario autenticado
         image,
         last_updated
 }
+
+POST **api/users/addCoin/:id
+Enviamos id de la criptomoneda a agregar a la lista del usuario autenticado 
+{
+    "success": "Currency added"
+}
+
+Recibiremos success en caso de que la criptomoneda haya sido agregada
+
+
+## Errores y sus codigos
+{ "rc": 1, "msg": "Invalid user or password" }
+{ "rc": 2, "msg": "Invalid token" }
+{ "rc": 3, "msg": "Database connection error" }
+{ "rc": 4, "msg": "API connection error" }
+{ "rc": 5, "msg": "Existing user" }
+{ "rc": 6, "msg": "No coins saved" }
+{ "rc": 7, "msg": "Existing currency for that user" }
+
 
 ## Autor ✒️
 Kevin Leandro De Ritis
