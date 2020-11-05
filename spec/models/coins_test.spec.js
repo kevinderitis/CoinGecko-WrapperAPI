@@ -18,8 +18,9 @@ it('Testing coin top', async function () {
     const expected = await coinuser.findAll({
         where: { iduser: 1 }
     });
+
     const result = await coins.coinTop(1);
-    expect(result[0].id).toBe(expected[0].idcoin);
+    expect(result[0].name).toBeCloseTo(expected[0].idcoin);
 
 });
 

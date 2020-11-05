@@ -39,7 +39,7 @@ async function coinTop(userid) {
         result = await coinuser.findAll({
             where: { iduser: userid }
         });
-
+        
         let userx = await user.findAll({
             where: { id: userid }
         });

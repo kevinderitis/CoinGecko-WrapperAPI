@@ -13,7 +13,7 @@ function tokenvalidation(req, res, next) {
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if (err) {
             res.json({ "rc": 3, "msg": "Invalid token" })
-        }else{
+        } else {
             req.user = authData.userfound;
         }
         next();
@@ -22,18 +22,20 @@ function tokenvalidation(req, res, next) {
 }
 
 async function signin(usr) {
+    
     let sign = "";
     const userfound = await user.findAll({
         where: { "username": usr.username }
     });
-
-    if (!userfound[0]) {
+    let lastid = await user.max('id');
+        if (!userfound[0]) {
+        usr.id = lastid + 1;
         await user.create(usr);
-        sign = { success: "User created." }
+        return { success: "User created." }
     } else {
-        sign = { "rc": 2, "msg": "Existing user" }
+        return { "rc": 2, "msg": "Existing user" }
     }
-    return sign;
+    
 }
 
 async function login(usrname, pass) {
