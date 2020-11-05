@@ -15,6 +15,7 @@ En primer lugar debemos ejecutar por consola el siguiente comando
 
 Va a instalar todas las dependencias necesarias para el proyecto.
 La base de datos debemos tenerla localmente o en caso de querer instalarla remotamente debemos cambiar nuestros datos en config.js 
+Dentro de config se encuentra la estructura de la base de datos MySQL.
 
 
 ## Ejecutando los test ⚙️
