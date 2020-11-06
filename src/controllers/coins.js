@@ -49,7 +49,6 @@ async function coinTop(userid) {
         marketlist = await list.json();
 
         result.forEach(element => {
-
             let data = searchmarketdata(element.idcoin, marketlist);
             listtop.push(data);
 
@@ -57,7 +56,7 @@ async function coinTop(userid) {
     } catch (error) {
         result = { "rc": 3, "msg": "Database error connection" }
     }
-
+   
     if (listtop) {
         try {
             ntop = await ordertop(listtop);
@@ -83,6 +82,7 @@ function searchmarketdata(idcoin, mrktlist) {
         }
         x = x + 1;
     }
+
     return data;
 }
 

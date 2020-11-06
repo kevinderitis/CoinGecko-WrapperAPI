@@ -3,10 +3,10 @@ const { user } = require('../../src/database');
 
 beforeEach(async function () {
     const user = {
-        "id": "99",
+    
         "name": "admin",
         "lastname": "admin",
-        "username": "admin",
+        "username": "admin2",
         "password": "admin",
         "favcoin": "usd"
 
@@ -17,9 +17,9 @@ beforeEach(async function () {
 
 it('Testing signin auth', async function () {
     expusers = await user.findAll({
-        where: { "id": 99 }
+        where: { "username": 'admin2' }
     });
-    expect('admin').toBe(expusers[0].name);
+    expect('admin2').toBe(expusers[0].username);
 });
 
 it('Testing login auth', async function () {
